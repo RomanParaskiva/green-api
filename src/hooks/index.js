@@ -1,3 +1,3 @@
-import { useAuth, AuthProvider } from "./auth.hook";
+import { useStore, StoreProvider } from "./store.hook";
 
-export { useAuth, AuthProvider };
+export { useStore, StoreProvider };

@@ -1,30 +1,22 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from "./hooks";
-import { AuthPage, ChatPage } from './pages';
-
-
+import { useEffect } from "react";
+import { useStore } from "./hooks";
+import { AuthPage, ChatPage } from "./pages";
 
 const App = () => {
-  const { isAuth } = useAuth();
+  const { isAuth, login } = useStore();
 
-  function RequireAuth({ children, redirectTo }) {
-    return isAuth ? children : <Navigate to={redirectTo} />;
-  }
+  useEffect(() => {
+    const GA = localStorage.getItem("GA");
+    if (GA?.length > 0) {
+      login({ ...JSON.parse(GA) });
+    }
+  }, [login]);
+
   return (
-    <div className='bg-black text-gray-400 w-screen h-screen'>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={
-          // <RequireAuth redirectTo="/login">
-            <ChatPage />
-          // </RequireAuth>
-        } />
-          <Route path="/login" element={<AuthPage />} />
-        </Routes>
-    </BrowserRouter>
+    <div className="bg-black text-gray-400 w-screen h-screen">
+      {isAuth ? <ChatPage /> : <AuthPage />}
     </div>
   );
 };
-
 
 export default App;
